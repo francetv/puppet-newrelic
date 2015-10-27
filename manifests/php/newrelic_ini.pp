@@ -6,7 +6,7 @@ define newrelic::php::newrelic_ini (
 
   exec { "/usr/bin/newrelic-install ${name}":
     path     => $exec_path,
-    command  => "/usr/bin/newrelic-install purge ; NR_INSTALL_SILENT=yes NR_INSTALL_PHPLIST=${join($name, ',')} NR_INSTALL_KEY=${newrelic_license_key} /usr/bin/newrelic-install install",
+    command  => "/usr/bin/newrelic-install purge ; NR_INSTALL_SILENT=yes NR_INSTALL_PHPLIST=${name} NR_INSTALL_KEY=${newrelic_license_key} /usr/bin/newrelic-install install",
     provider => 'shell',
     user     => 'root',
     group    => 'root',
