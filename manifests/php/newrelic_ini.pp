@@ -20,7 +20,7 @@ define newrelic::php::newrelic_ini (
     user     => 'root',
     group    => 'root',
     unless   => "grep ${newrelic_license_key} ${name}/newrelic.ini",
-    before   => File["${name}/newrelic.ini"]
+    require  => Exec["/usr/bin/newrelic-install ${name}"],
   }
 
   file { "${name}/newrelic.ini":
