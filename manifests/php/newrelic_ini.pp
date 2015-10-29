@@ -13,6 +13,16 @@ define newrelic::php::newrelic_ini (
     unless   => "grep ${newrelic_license_key} ${name}/newrelic.ini",
   }
 
+  exec { "remove_old_ini_file" :
+    path     => $exec_path,
+    command  => "find /etc/php5/ -name newrelic.ini",
+    provider => 'shell',
+    user     => 'root',
+    group    => 'root',
+    unless   => "grep ${newrelic_license_key} ${name}/newrelic.ini",
+    before   => File["${name}/newrelic.ini"]
+  }
+
   file { "${name}/newrelic.ini":
     path    => "${name}/newrelic.ini",
     content => template('newrelic/newrelic.ini.erb'),
