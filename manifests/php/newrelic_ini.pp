@@ -16,7 +16,7 @@ define newrelic::php::newrelic_ini (
 
   exec { "remove_old_ini_file" :
     path     => $exec_path,
-    command  => "find /etc/php5/ -name newrelic.ini -delete",
+    command  => "find ${name} -name newrelic.ini -delete",
     provider => 'shell',
     user     => 'root',
     group    => 'root',
