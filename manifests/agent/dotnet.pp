@@ -34,12 +34,13 @@ class newrelic::agent::dotnet (
   $newrelic_daemon_cfgfile_ensure                        = 'present',
   $temp_dir                                              = $::newrelic::params::temp_dir ,
   $newrelic_dotnet_source                                = $::newrelic::params::newrelic_dotnet_source,
+  $newrelic_dotnet_application_name                      = $::newrelic::params::newrelic_dotnet_application_name,
 ) inherits ::newrelic {
 
   if ! $newrelic_license_key {
     fail('You must specify a valid License Key.')
   }
-  
+
   case $newrelic_dotnet_package_ensure {
     'absent':   {
       $package_source = false
@@ -56,7 +57,7 @@ class newrelic::agent::dotnet (
       $destination_file = "NewRelicDotNetAgent_${::architecture}_${newrelic_dotnet_package_ensure}.msi"
     }
   }
-  
+
   if $package_source {
     download_file {$destination_file:
       url                   => $package_source,
@@ -74,6 +75,11 @@ class newrelic::agent::dotnet (
   file { "${newrelic_dotnet_conf_dir}\\newrelic.config":
     ensure  => $newrelic_daemon_cfgfile_ensure,
     content => template('newrelic/newrelic.config.erb'),
+    notify  => Exec['iisreset'],
   }
 
+  exec { 'iisreset':
+    path        => 'C:/WINDOWS/System32',
+    refreshonly => true
+  }
 }
