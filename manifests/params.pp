@@ -33,6 +33,19 @@ class newrelic::params {
       case $::operatingsystem {
         'Debian': {
           case $::operatingsystemrelease {
+            /^9/: {
+              case $::phpversion {
+                /^7/: {
+                  $newrelic_php_conf_dir  = ['/etc/php/7.0/mods-available']
+                }
+                /^5\.6/: {
+                  $newrelic_php_conf_dir  = ['/etc/php/7.0/mods-available']
+                }
+                default:{
+                  $newrelic_php_conf_dir  = ['/etc/php5/mods-available']
+                }
+              }
+            }
             /^8/: {
               case $::phpversion {
                 /^7/: {
