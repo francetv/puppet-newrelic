@@ -39,7 +39,7 @@ class newrelic::params {
                   $newrelic_php_conf_dir  = ['/etc/php/7.0/mods-available']
                 }
                 /^5\.6/: {
-                  $newrelic_php_conf_dir  = ['/etc/php/7.0/mods-available']
+                  $newrelic_php_conf_dir  = ['/etc/php/5.6/mods-available']
                 }
                 default:{
                   $newrelic_php_conf_dir  = ['/etc/php5/mods-available']
