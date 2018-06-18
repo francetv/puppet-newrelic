@@ -34,20 +34,16 @@ class newrelic::params {
         'Debian': {
           case $::operatingsystemrelease {
             /^9/: {
-              case $::phpversion {
-                /^7/: {
-                  $newrelic_php_conf_dir  = ['/etc/php/7.0/mods-available']
+              if $::phpversion and $::phpversion =~ /^(?:(\d+)\.)?(?:(\d+)\.)?(\*|\d+)$/ {
+                $majeur_version = $1
+                if $2 == undef {
+                  $minor_version = $3
+                } else {
+                  $minor_version = $2
                 }
-                /^7\.2/: {
-                  $newrelic_php_conf_dir  = ['/etc/php/7.2/mods-available']
-                }
-                /^5\.6/: {
-                  $newrelic_php_conf_dir  = ['/etc/php/5.6/mods-available']
-                }
-                default:{
-                  $newrelic_php_conf_dir  = ['/etc/php5/mods-available']
-                }
+                $php_real_version = "${majeur_version}${minor_version}"
               }
+              $newrelic_php_conf_dir  = ["/etc/php/${php_real_version}/mods-available"]
             }
             /^8/: {
               case $::phpversion {
