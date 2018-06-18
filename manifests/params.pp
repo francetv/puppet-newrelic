@@ -41,7 +41,7 @@ class newrelic::params {
                 } else {
                   $minor_version = $2
                 }
-                $php_real_version = "${majeur_version}${minor_version}"
+                $php_real_version = "${majeur_version}.${minor_version}"
               }
               $newrelic_php_conf_dir  = ["/etc/php/${php_real_version}/mods-available"]
             }
