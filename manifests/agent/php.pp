@@ -64,6 +64,7 @@ class newrelic::agent::php (
   $newrelic_ini_capture_params                           = undef,
   $newrelic_ini_ignored_params                           = undef,
   $newrelic_ini_webtransaction_name_files                = undef,
+  $newrelic_service_provider                             = $::newrelic::params::newrelic_service_provider,
   $newrelic_daemon_cfgfile_ensure                        = 'present',
   $newrelic_daemon_dont_launch                           = undef,
   $newrelic_daemon_pidfile                               = undef,
@@ -91,6 +92,7 @@ class newrelic::agent::php (
   service { $newrelic_php_service:
     ensure     => $newrelic_php_service_ensure,
     enable     => $newrelic_php_service_enable,
+    provider   => $newrelic_service_provider,
     hasrestart => true,
     hasstatus  => true,
   }

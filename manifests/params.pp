@@ -11,6 +11,7 @@
 # Sample Usage:
 #
 class newrelic::params {
+  $newrelic_service_provider = 'init'
 
   case $::osfamily {
     'RedHat': {
@@ -43,7 +44,8 @@ class newrelic::params {
                 }
                 $php_real_version = "${majeur_version}.${minor_version}"
               }
-              $newrelic_php_conf_dir  = ["/etc/php/${php_real_version}/mods-available"]
+              $newrelic_php_conf_dir     = ["/etc/php/${php_real_version}/mods-available"]
+              $newrelic_service_provider = 'systemd'
             }
             /^8/: {
               case $::phpversion {
@@ -87,6 +89,7 @@ class newrelic::params {
       $newrelic_dotnet_conf_dir       = 'C:\\ProgramData\\New Relic\\.NET Agent'
       $newrelic_dotnet_package        = "New Relic .NET Agent (${bitness}-bit)"
       $newrelic_dotnet_source         = 'http://download.newrelic.com/dot_net_agent/release/'
+      $newrelic_service_provider      = 'windows'
     }
     default: {
       fail("Unsupported osfamily: ${::osfamily} operatingsystem: ${::operatingsystem}")

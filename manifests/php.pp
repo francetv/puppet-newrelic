@@ -105,9 +105,26 @@ define newrelic::php (
     require => Class['newrelic::params'],
   }
 
+  case $newrelic_service_provider {
+    'systemd': {
+      file { '/etc/systemd/system/newrelic-daemon.cfg':
+        ensure  => $newrelic_php_service_ensure,
+        content => template('newrelic/newrelic-daemon.service.erb'),
+        before  => Service[$newrelic_php_service],
+        notify  => Service[$newrelic_php_service],
+      }~>
+      exec { 'newrelic-daemon-systemd-reload':
+        command     => 'systemctl daemon-reload',
+        path        => [ '/usr/bin', '/bin', '/usr/sbin' ],
+        refreshonly => true,
+      }
+    }
+    default: {}
+  }
   service { $newrelic_php_service:
     ensure     => $newrelic_php_service_ensure,
     enable     => $newrelic_php_service_enable,
+    provider   => newrelic_service_provider,
     hasrestart => true,
     hasstatus  => true,
   }

@@ -1,0 +1,13 @@
+[Unit]
+Description=New Relic PHP Agent
+After=syslog.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+PIDFile=/var/run/newrelic-daemon.pid
+ExecStart=/usr/bin/newrelic-daemon -c /etc/newrelic/newrelic.cfg
+MemoryLimit=256M
+
+[Install]
+WantedBy=multi-user.target
