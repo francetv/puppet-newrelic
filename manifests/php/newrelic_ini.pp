@@ -3,6 +3,7 @@ define newrelic::php::newrelic_ini (
   $newrelic_license_key,
   $exec_path,
 ) {
+  notice "[DEBUG] detected PHP modules config directory: ${name}"
 
   case $::operatingsystem {
     'Debian': {
