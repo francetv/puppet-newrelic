@@ -4,6 +4,18 @@ define newrelic::php::newrelic_ini (
   $exec_path,
 ) {
 
+  case $::operatingsystem {
+    'Debian': {
+      $phpenmod_cmd = $::operatingsystemrelease ? {
+        /^9/    => 'phpenmod',
+        default => 'php5enmod'
+      }
+    }
+    default: {
+      $phpenmod_cmd = 'php5enmod'
+    }
+  }
+
   exec { "/usr/bin/newrelic-install ${name}" :
     path     => $exec_path,
     command  => "/usr/bin/newrelic-install purge ; NR_INSTALL_SILENT=yes NR_INSTALL_KEY=${newrelic_license_key} /usr/bin/newrelic-install install",
@@ -27,12 +39,12 @@ define newrelic::php::newrelic_ini (
     path    => "${name}/newrelic.ini",
     content => template('newrelic/newrelic.ini.erb'),
     require => Exec["/usr/bin/newrelic-install ${name}"],
-    notify  => Exec["php5enmod newrelic"]
+    notify  => Exec["${phpenmod_cmd} newrelic"]
   }
 
-  exec { "php5enmod newrelic" :
+  exec { "${phpenmod_cmd} newrelic" :
     path     => $exec_path,
-    command  => "php5enmod newrelic",
+    command  => "${phpenmod_cmd} newrelic",
     provider => 'shell',
     user     => 'root',
     group    => 'root',
