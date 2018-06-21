@@ -11,7 +11,6 @@
 # Sample Usage:
 #
 class newrelic::params {
-  $newrelic_service_provider = 'init'
 
   case $::osfamily {
     'RedHat': {
@@ -20,6 +19,7 @@ class newrelic::params {
       $newrelic_php_package   = 'newrelic-php5'
       $newrelic_php_service   = 'newrelic-daemon'
       $newrelic_php_conf_dir  = ['/etc/php.d']
+      $newrelic_service_provider = 'init'
       package { 'newrelic-repo-5-3.noarch':
         ensure   => present,
         source   => 'http://yum.newrelic.com/pub/newrelic/el5/x86_64/newrelic-repo-5-3.noarch.rpm',
@@ -56,12 +56,15 @@ class newrelic::params {
                   $newrelic_php_conf_dir  = ['/etc/php5/mods-available']
                 }
               }
+              $newrelic_service_provider = 'init'
             }
             /^6/: {
               $newrelic_php_conf_dir  = ['/etc/php5/conf.d']
+              $newrelic_service_provider = 'init'
             }
             default: {
               $newrelic_php_conf_dir  = ['/etc/php5/mods-available']
+              $newrelic_service_provider = 'init'
             }
           }
         }
