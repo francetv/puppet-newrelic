@@ -105,7 +105,7 @@ define newrelic::php (
     require => Class['newrelic::params'],
   }
 
-  case $newrelic_service_provider {
+  case $newrelic::params::newrelic_service_provider {
     'systemd': {
       file { '/etc/systemd/system/newrelic-daemon.cfg':
         ensure  => $newrelic_php_service_ensure,
@@ -124,7 +124,7 @@ define newrelic::php (
   service { $newrelic_php_service:
     ensure     => $newrelic_php_service_ensure,
     enable     => $newrelic_php_service_enable,
-    provider   => newrelic_service_provider,
+    provider   => $newrelic::params::newrelic_service_provider,
     hasrestart => true,
     hasstatus  => true,
   }
