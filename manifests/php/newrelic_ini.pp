@@ -5,16 +5,6 @@ define newrelic::php::newrelic_ini (
   Hash   $settings             = {},
 ) {
 
-  exec { "/usr/bin/newrelic-install ${name}" :
-    path     => $exec_path,
-    command  => "/usr/bin/newrelic-install purge ; NR_INSTALL_SILENT=yes NR_INSTALL_KEY=${newrelic_license_key} /usr/bin/newrelic-install install",
-    provider => 'shell',
-    user     => 'root',
-    group    => 'root',
-    unless   => "grep ${newrelic_license_key} ${name}/newrelic.ini",
-    notify  => Exec["remove_old_ini_file"],
-  }
-
   exec { "remove_old_ini_file" :
     path     => $exec_path,
     command  => "find ${name} -name newrelic.ini -delete",
