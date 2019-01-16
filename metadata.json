@@ -46,15 +46,19 @@
   ],
   "dependencies": [
     {
-      "name": "puppetlabs/apt",
-      "version_requirement": ">= 2.0.0"
+      "name": "puppetlabs-apt",
+      "version_requirement": ">= 6.0.0"
     },
     {
-      "name": "puppetlabs/stdlib",
+      "name": "puppet-php",
+      "version_requirement": ">= 6.0.0"
+    },
+    {
+      "name": "puppetlabs-stdlib",
       "version_requirement": ">= 4.1.0"
     },
     {
-      "name": "puppet/download_file",
+      "name": "puppet-download_file",
       "version_requirement": ">= 1.2.1"
     }
   ]

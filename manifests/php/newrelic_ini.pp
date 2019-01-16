@@ -1,21 +1,9 @@
 # This module should not be used directly. It is used by newrelic::php.
 define newrelic::php::newrelic_ini (
-  $newrelic_license_key,
-  $exec_path,
+  String $newrelic_license_key = undef,
+  String $exec_path            = undef,
+  Hash   $settings             = {},
 ) {
-  notice "[DEBUG] detected PHP modules config directory: ${name}"
-
-  case $::operatingsystem {
-    'Debian': {
-      $phpenmod_cmd = $::operatingsystemrelease ? {
-        /^9/    => 'phpenmod',
-        default => 'php5enmod'
-      }
-    }
-    default: {
-      $phpenmod_cmd = 'php5enmod'
-    }
-  }
 
   exec { "/usr/bin/newrelic-install ${name}" :
     path     => $exec_path,
@@ -36,20 +24,26 @@ define newrelic::php::newrelic_ini (
     unless   => "grep ${newrelic_license_key} ${name}/newrelic.ini",
   }
 
-  file { "${name}/newrelic.ini" :
-    path    => "${name}/newrelic.ini",
-    content => template('newrelic/newrelic.ini.erb'),
-    require => Exec["/usr/bin/newrelic-install ${name}"],
-    notify  => Exec["${phpenmod_cmd} newrelic"]
+  $default_settings =       {
+    'newrelic/newrelic.enabled' => 'true',
+    'newrelic/newrelic.license' => $newrelic_license_key,
+    'newrelic/newrelic.logfile' => "/var/log/newrelic/php_agent.log",
+    'newrelic/newrelic.loglevel' => "info",
+    'newrelic/newrelic.appname' => "PHP Application",
   }
 
-  exec { "${phpenmod_cmd} newrelic" :
-    path     => $exec_path,
-    command  => "${phpenmod_cmd} newrelic",
-    provider => 'shell',
-    user     => 'root',
-    group    => 'root',
-    unless   => "grep ${newrelic_license_key} ${name}/newrelic.ini",
+  if $settings != {} {
+    $final_settings = deep_merge(
+      $default_settings,
+      $full_settings
+    )
+  } else {
+    $final_settings = $default_settings
   }
 
+  php::extension::config { 'newrelic':
+    provider        => 'apt',
+    settings        => $final_settings,
+    require         => Exec["/usr/bin/newrelic-install ${name}"],
+  }
 }
