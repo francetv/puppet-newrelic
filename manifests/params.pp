@@ -43,6 +43,8 @@ class newrelic::params {
                   $minor_version = $2
                 }
                 $php_real_version = "${majeur_version}.${minor_version}"
+              } else {
+                $php_real_version =  $::php::globals::php_version
               }
               $newrelic_php_conf_dir     = ["/etc/php/${php_real_version}/mods-available"]
               $newrelic_service_provider = 'systemd'
