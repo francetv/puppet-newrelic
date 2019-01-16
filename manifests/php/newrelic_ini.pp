@@ -5,15 +5,6 @@ define newrelic::php::newrelic_ini (
   Hash   $settings             = {},
 ) {
 
-  exec { "remove_old_ini_file" :
-    path     => $exec_path,
-    command  => "find ${name} -name newrelic.ini -delete",
-    provider => 'shell',
-    user     => 'root',
-    group    => 'root',
-    unless   => "grep ${newrelic_license_key} ${name}/newrelic.ini",
-  }
-
   $default_settings =       {
     'newrelic/newrelic.enabled' => 'true',
     'newrelic/newrelic.license' => $newrelic_license_key,
@@ -34,6 +25,5 @@ define newrelic::php::newrelic_ini (
   php::extension::config { 'newrelic':
     provider        => 'apt',
     settings        => $final_settings,
-    require         => Exec["/usr/bin/newrelic-install ${name}"],
   }
 }
