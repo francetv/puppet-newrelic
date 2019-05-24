@@ -11,12 +11,12 @@ define newrelic::php::newrelic_ini (
     'newrelic/newrelic.license'  => $license_key,
     'newrelic/newrelic.logfile'  => "/var/log/newrelic/php_agent.log",
     'newrelic/newrelic.loglevel' => "info",
-    'newrelic/newrelic.appname'  => $ini_appname
+    'newrelic/newrelic.appname'  => $appname
   }
 
   $real_settings = deep_merge(
     $default_settings,
-    $full_settings
+    $settings
   )
 
   php::extension::config { 'newrelic':
