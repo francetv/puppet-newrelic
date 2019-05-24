@@ -80,7 +80,7 @@ class newrelic::agent::php (
   $newrelic_daemon_auditlog                              = undef,
 ) inherits ::newrelic {
 
-  if ! $newrelic_license_key {
+  if !$newrelic_license_key {
     fail('You must specify a valid License Key.')
   }
 
@@ -98,11 +98,12 @@ class newrelic::agent::php (
   }
 
   ::newrelic::php::newrelic_ini { $newrelic_php_conf_dir:
-    exec_path            => $newrelic_php_exec_path,
-    newrelic_license_key => $newrelic_license_key,
-    before               => [ File['/etc/newrelic/newrelic.cfg'], Service[$newrelic_php_service] ],
-    require              => Package[$newrelic_php_package],
-    notify               => Service[$newrelic_php_service],
+    exec_path   => $newrelic_php_exec_path,
+    license_key => $newrelic_license_key,
+    appname     => $newrelic_ini_appname,
+    before      => [ File['/etc/newrelic/newrelic.cfg'], Service[$newrelic_php_service] ],
+    require     => Package[$newrelic_php_package],
+    notify      => Service[$newrelic_php_service],
   }
 
   file { '/etc/newrelic/newrelic.cfg':
