@@ -34,7 +34,7 @@ class newrelic::params {
       case $::operatingsystem {
         'Debian': {
           case $::operatingsystemrelease {
-            /^9/: {
+            /^(10|9)/: {
               if $::phpversion and $::phpversion =~ /^(?:(\d+)\.)?(?:(\d+)\.)?(\*|\d+)/ {
                 $majeur_version = $1
                 if $2 == undef {
