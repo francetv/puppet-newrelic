@@ -7,11 +7,12 @@ define newrelic::php::newrelic_ini (
 ) {
 
   $default_settings = {
-    'newrelic/newrelic.enabled'  => 'true',
-    'newrelic/newrelic.license'  => $license_key,
-    'newrelic/newrelic.logfile'  => "/var/log/newrelic/php_agent.log",
-    'newrelic/newrelic.loglevel' => "info",
-    'newrelic/newrelic.appname'  => $appname
+    'newrelic/newrelic.enabled'                     => 'true',
+    'newrelic/newrelic.distributed_tracing_enabled' => 'false',
+    'newrelic/newrelic.license'                     => $license_key,
+    'newrelic/newrelic.logfile'                     => "/var/log/newrelic/php_agent.log",
+    'newrelic/newrelic.loglevel'                    => "info",
+    'newrelic/newrelic.appname'                     => $appname
   }
 
   $real_settings = deep_merge(
