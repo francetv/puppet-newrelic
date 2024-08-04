@@ -33,7 +33,7 @@ class newrelic::params {
       $newrelic_php_service   = 'newrelic-daemon'
       case $facts['os']['name'] {
         'Debian': {
-          case $::operatingsystemrelease {
+          case $facts['os']['release']['major'] {
             /^(12|11|10|9)/: {
               if $::phpversion and $::phpversion =~ /^(?:(\d+)\.)?(?:(\d+)\.)?(\*|\d+)/ {
                 $majeur_version = $1
