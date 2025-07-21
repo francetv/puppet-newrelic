@@ -741,3 +741,8 @@ newrelic.webtransaction.name.files = "<%= scope['::newrelic::agent::php::newreli
 ;
 ;newrelic.browser_monitoring.attributes.include = ""
 ;newrelic.browser_monitoring.attributes.exclude = ""
+
+newrelic.application_logging.enabled = false
+newrelic.application_logging.metrics.enabled = false
+newrelic.application_logging.forwarding.enabled = false
+newrelic.error_collector.ignore_exceptions = Symfony\Component\HttpKernel\Exception\HttpExceptionInterface
